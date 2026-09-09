@@ -1,3 +1,28 @@
+var updatingItemId = null;
+
+document.addEventListener("DOMContentLoaded", function() { getTasks(); });
+
+document.getElementById("addNewTaskBtn").addEventListener("click", function() {
+    updatingItemId = null;
+
+    document.getElementById("addTaskForm").reset();
+    document.getElementById("AddTask").style.display = "block";
+});
+
+document.getElementById("cancelBtn").addEventListener("click", function() {
+    document.getElementById("AddTask").style.display = "none";
+});
+
+function taskSubmit(e) {
+    e.preventDefault();
+
+    if (updatingItemId === null) {
+        addTaskSubmit(e);
+    } else {
+        updateTaskSubmit(e);
+    } 
+}
+
 function signupSubmit(e) {
     e.preventDefault();
 
@@ -19,7 +44,7 @@ function signupSubmit(e) {
 
 function signinSubmit(e){
     e.preventDefault();
-    var url = "https://todo-list.dcism.org/signin_action.php";
+    var url = 'https://todo-list.dcism.org/signin_action.php';
     var data = $('#signin-form').serialize();
     var urlData = url+"?"+data;
     $.ajax({
@@ -49,7 +74,7 @@ function signoutClick(e) {
 function getTasks() {
         $.ajax({
         type: 'GET',
-        url: "https://todo-list.dcism.org/getItems_action.php",
+        url: 'https://todo-list.dcism.org/getItems_action.php',
         data: {
             status: "active",
             user_id: localStorage.getItem("user_id")
@@ -64,7 +89,7 @@ function getTasks() {
                 var tasks = res["data"];
                 for (var key in tasks) {
                     if (tasks.hasOwnProperty(key)) {
-                        var task = tasks[key];
+                        let task = tasks[key];
                         var newRow = taskTableBody.insertRow();
                         var cell1 = newRow.insertCell(0);
                         var cell2 = newRow.insertCell(1);
@@ -73,13 +98,43 @@ function getTasks() {
 
                         cell1.innerHTML = task["item_name"];
                         cell2.innerHTML = task["item_description"];
-                        cell3.innerHTML = task["status"];
-                        cell4.innerHTML = `
-                            <div class="action-buttons">
-                                <button id="edit-status-btn" class="editBtn">Edit</button>
-                                <button id="delete-btn" class="deleteBtn">Delete</button>
+                        cell3.innerHTML = `
+                            <div class="status-btn">
+                                <span>${task["status"]}</span>  
+                                <button class="toggle ${task["status"]}"></button>
+                                
                             </div>
                         `;
+                        cell4.innerHTML = `
+                            <div class="action-buttons">
+                                <button class="btn updateBtn">Edit</button>
+                                <button class="btn deleteBtn">Delete</button>
+                            </div>
+                        `;
+
+                        var updateBtn = cell4.querySelector(".updateBtn");
+                        var deleteBtn = cell4.querySelector(".deleteBtn");
+                        var toggleBtn = cell3.querySelector(".toggle");
+
+                        updateBtn.addEventListener("click", function() {
+                            updatingItemId = task["item_id"];
+
+                            document.getElementById("item_name").value = task["item_name"];
+                            document.getElementById("item_description").value = task["item_description"];
+
+                            document.getElementById("AddTask").style.display = "block";
+                        });
+
+                        deleteBtn.addEventListener("click", function() {
+                            deleteTask(task.item_id);
+                        });
+
+                        toggleBtn.addEventListener("click", function() {
+                            var newStatus = task["status"] === "active" ? "inactive" : "active";
+
+                            changeTaskStatus(task["item_id"], newStatus);
+                        });
+                        
                     }
                 }
             }
@@ -95,7 +150,6 @@ function getTasks() {
 
 
 function addTaskSubmit(e) {
-    console.log("annyeonghaseyo");
     e.preventDefault();
     
     var data = $('#addTaskForm').serialize();
@@ -107,7 +161,6 @@ function addTaskSubmit(e) {
         data: JSON.stringify(jsonData),
         dataType: 'json',
         success: function(response) {
-            console.log("wonyoung");
             alert(response["message"]);
             if(response["status"] == 200) {
                 $('#addTaskForm')[0].reset();
@@ -118,12 +171,93 @@ function addTaskSubmit(e) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", function() { getTasks(); });
 
-document.getElementById("addNewTaskBtn").addEventListener("click", function() {
-    document.getElementById("AddTask").style.display = "block";
-});
+function updateTaskSubmit(e) {
+    e.preventDefault();
 
-document.getElementById("cancelBtn").addEventListener("click", function() {
-    document.getElementById("AddTask").style.display = "none";
-});
+    var data = $('#addTaskForm').serialize();
+    var jsonData = Object.fromEntries(new URLSearchParams(data));
+
+    jsonData.item_id = updatingItemId;
+
+    console.log("Updating item:", updatingItemId);
+    console.log("Sending:", jsonData);
+
+    $.ajax({
+        type: 'PUT',
+        url: 'https://todo-list.dcism.org/editItem_action.php',
+        data: JSON.stringify(jsonData),
+        contentType: 'application/json',
+        dataType: 'json',
+
+        success: function(response) {
+            console.log("Response:", response);
+            alert(response["message"]);
+
+            if (response["status"] == 200) {
+                $('#addTaskForm')[0].reset();
+                updatingItemId = null;
+
+                getTasks();
+
+                document.getElementById("AddTask").style.display = "none";
+            }
+        },
+
+        error: function(xhr, status, error) {
+            console.log("Status:", xhr.status);
+            console.log("Error:", error);
+            console.log("Response:", xhr.responseText);
+        }
+    });
+}
+
+function changeTaskStatus(itemId, status){
+    $.ajax({
+        type: 'PUT',
+        url: 'https://todo-list.dcism.org//statusItem_action.php',
+        data: JSON.stringify({
+            status: status,
+            item_id: itemId
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+
+        success: function(response){
+            console.log(response);
+
+            if(response["status"] == 200) {
+                getTasks();
+            } else {
+                alert(response["message"]);
+            }
+        }
+    });
+}   
+
+function deleteTask(itemId) {
+    if (!confirm("Are you sure you want to delete this task?")) {
+        return;
+    }
+
+        $.ajax({
+            type: 'DELETE',
+            url: 'https://todo-list.dcism.org/deleteItem_action.php',
+            data: {
+                item_id: itemId
+            },
+            dataType: 'json',
+            success: function(response){
+                console.log("Delete response:", response);
+                alert(response.message);
+                if(response.status == 20){
+                    getTasks();
+                }
+            },
+            error: function(xhr, status, error) {
+            console.log("Delete error:", error);
+            console.log("Status:", xhr.status);
+            console.log("Response:", xhr.responseText);
+        }
+    });
+}

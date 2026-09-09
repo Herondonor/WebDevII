@@ -1,14 +1,15 @@
 body{
     color: #333;
-    background: #728ba8;
+    background: #eef3f8;
     font-family: 'Roboto', sans-serif;
 }
 .input{
+    color: #333;
     width: 100%;
     padding: 10px;
-    border: none;
+    border: solid 1px #aec0d4;
     height: 40px;
-    border-radius: 5px;
+    border-radius: px;
     background: #f2f2f2;
 }
 .input:focus{
@@ -86,6 +87,10 @@ body{
     text-align: center;
 }
 
+.sign-link a{
+    color: #728ba8;
+}
+
 /*HOME PAGE */
 h1{
     display: flex;
@@ -100,34 +105,38 @@ h1{
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     padding: 20px;
+    
 }
 
-table{
+table {
     grid-column: 1 / span 5;
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(45, 62, 80, 0.08);
+    border: 1px solid #e1e7ee;
+}
+
+th {
+    padding: 16px 18px;
+    background: #f7f9fc;
+    color: #596777;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    border-bottom: 1px solid #e1e7ee;
 }
 
 td {
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 2px;
-    padding: 0px 10px;
+    padding: 15px 18px;
+    background: #ffffff;
+    border-bottom: 1px solid #edf0f4;
+    color: #3e4c59;
+    font-size: 14px;
 }
-
-th{
-    border: 1px solid black;
-    background-color: #f2f2f2;
-    border-radius: 2px;
-    padding: 0px 10px; 
-}
-
-.addNewTaskBtn, .btn-logout {
-    grid-column:5;
-    justify-self: end;
-    margin-right: 20px;
-}
-
 
 #AddTask {
     display: none;
@@ -147,28 +156,69 @@ input[type="text"], input[type="email"] {
     box-sizing: border-box;
 }
 
-.btn {
-    padding: 5px 20px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
 .action-buttons {
-    flex-direction: column;
     display: flex;
-    margin: 0 5px;
-    padding: 5px 10px;
-    font-weight: bold;
+    gap: 7px;
+    align-items: center;
+}
+
+.button-options{
+    display: flex;
+    flex-direction: row;
+    grid-column:5;
+    justify-self: end;
+    margin-right: 20px;
+    gap: 15px;
+}
+
+.btn {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
     cursor: pointer;
+    transition: 0.2s ease;
+    background-color: #728ba8;
+    color: #fff;
 }
 
-.editBtn {
-    background-color: #4CAF50;
-    color: white;
-    margin-bottom: 2px;
+.updateBtn {
+    background-color: #e8f1fb;
+    color: #47719f;
 }
 
-.deleteBtn{
-    background-color: #f44336;
-    color: white;
+.updateBtn:hover {
+    background-color: #d8e7f7;
 }
+
+.deleteBtn {
+    background-color: #fdeaea;
+    color: #c75b5b;
+}
+
+.deleteBtn:hover {
+    background-color: #f9dada;
+}
+
+.toggle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #888;
+    background: white;
+    cursor: pointer;
+    padding: 0;
+    margin: 10px;
+}
+
+.toggle.active {
+    background: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.toggle.inactive {
+    background: #ccc;
+    border-color: #999;
+}
+
