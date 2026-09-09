@@ -1,0 +1,174 @@
+body{
+    color: #333;
+    background: #728ba8;
+    font-family: 'Roboto', sans-serif;
+}
+.input{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    height: 40px;
+    border-radius: 5px;
+    background: #f2f2f2;
+}
+.input:focus{
+    outline: none;
+    background: #e2e2e2;
+}
+.input, .btn{        
+    border-radius: 3px;
+}
+.signup-form{
+    width: 500px;
+    margin: 40px auto;
+}
+.signup-form form{
+    padding: 40px;
+    color: #999;
+    background: #fff;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.signup-form h1{
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.signup-form .btn{
+    font-size: 16px;
+    font-weight: bold;
+    background: #728ba8;
+    border: none;
+    min-width: 140px;
+    color: #fff;
+}
+.signup-form .btn:hover, .signup-form .btn:focus{
+    background: #4e6074 !important;
+    outline: none;
+}
+.signup-form a{
+    color: #fff;
+    text-decoration: underline;
+}
+.signup-form a:hover{
+    text-decoration: none;
+}
+.signup-form form a{
+    color: #728ba8;
+    text-decoration: none;
+}	
+.signup-form form a:hover{
+    text-decoration: underline;
+}
+
+.signup-form .form-grp{
+    margin-bottom: 20px;
+}
+.row{
+    display: flex;
+    gap: 15px;
+    margin-bottom: 0;
+}
+.row, .col{
+    flex: 1;
+}
+.signup-form .row div:first-child{
+    padding-right: 15px;
+}
+.signup-form .row div:last-child{
+    padding-left: 15px;
+}
+.signup-form .sign-link {
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+/*HOME PAGE */
+h1{
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    margin: 20px;
+    color: #333;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+table{
+    grid-column: 1 / span 5;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: 0px 10px;
+}
+
+th{
+    border: 1px solid black;
+    background-color: #f2f2f2;
+    border-radius: 2px;
+    padding: 0px 10px; 
+}
+
+.addNewTaskBtn, .btn-logout {
+    grid-column:5;
+    justify-self: end;
+    margin-right: 20px;
+}
+
+
+#AddTask {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 100px;
+    border: 1px solid #ccc;
+}
+
+input[type="text"], input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+}
+
+.btn {
+    padding: 5px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.action-buttons {
+    flex-direction: column;
+    display: flex;
+    margin: 0 5px;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.editBtn {
+    background-color: #4CAF50;
+    color: white;
+    margin-bottom: 2px;
+}
+
+.deleteBtn{
+    background-color: #f44336;
+    color: white;
+}
